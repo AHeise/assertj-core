@@ -835,6 +835,32 @@ public class Assumptions {
     return assumeThat(catchThrowable(shouldRaiseOrNotThrowable));
   }
 
+  /**
+   * Creates a new instance of <code>{@link ObjectAssert}</code> for any object.
+   *
+   * <p>
+   * This overload is useful, when an overloaded method of assertThat(...) takes precedence over the generic {@link
+   * #assumeThat(Object)}.
+   * </p>
+   *
+   * Example :
+   * <pre><code class='java'>class MyList<T> extends AbstractList<T> {
+   *     public int allocationSize() { ... }
+   * }
+   *
+   * // cast necessary because {@link #assumeThat(List)} "forgets" actual type
+   * assumeThat(new MyList<Object>()).matches(list -> ((MyList<Object>) list).allocationSize() == 13);
+   * // no cast needed, but also no additional list assertions
+   * assumeThatObject(new MyList<Object>()).matches(list -> list.allocationSize() == 13);</code></pre>
+   *
+   * @param <T> the type of the actual value.
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  public static <T> ProxyableObjectAssert<T> assumeThatObject(T actual) {
+    return assumeThat(actual);
+  }
+
   // Java 8 assumptions methods
 
   /**

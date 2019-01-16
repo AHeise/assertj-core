@@ -1105,6 +1105,31 @@ public class Assertions {
   }
 
   /**
+   * Creates a new instance of <code>{@link ObjectAssert}</code> for any object.
+   *
+   * <p>
+   * This overload is useful, when an overloaded method of assertThat(...) takes precedence over the generic {@link #assertThat(Object)}.
+   * </p>
+   *
+   * Example :
+   * <pre><code class='java'>class MyList<T> extends AbstractList<T> {
+   *     public int allocationSize() { ... }
+   * }
+   *
+   * // cast necessary because {@link #assertThat(List)} "forgets" actual type
+   * assertThat(new MyList<Object>()).matches(list -> ((MyList<Object>) list).allocationSize() == 13);
+   * // no cast needed, but also no additional list assertions
+   * assertThatObject(new MyList<Object>()).matches(list -> list.allocationSize() == 13);</code></pre>
+   *
+   * @param <T> the type of the actual value.
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  public static <T> ObjectAssert<T> assertThatObject(T actual) {
+    return assertThat(actual);
+  }
+
+  /**
    * Allows catching a {@link Throwable} more easily when used with Java 8 lambdas.
    *
    * <p>

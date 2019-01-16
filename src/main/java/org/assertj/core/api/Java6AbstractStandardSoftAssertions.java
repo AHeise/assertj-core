@@ -757,6 +757,31 @@ public class Java6AbstractStandardSoftAssertions extends AbstractSoftAssertions 
   }
 
   /**
+   * Creates a new instance of <code>{@link ObjectAssert}</code> for any object.
+   *
+   * <p>
+   * This overload is useful, when an overloaded method of assertThat(...) takes precedence over the generic {@link #assertThat(Object)}.
+   * </p>
+   *
+   * Example :
+   * <pre><code class='java'>class MyList<T> extends AbstractList<T> {
+   *     public int allocationSize() { ... }
+   * }
+   *
+   * // cast necessary because {@link #assertThat(List)} "forgets" actual type
+   * assertThat(new MyList<Object>()).matches(list -> ((MyList<Object>) list).allocationSize() == 13);
+   * // no cast needed, but also no additional list assertions
+   * assertThatObject(new MyList<Object>()).matches(list -> list.allocationSize() == 13);</code></pre>
+   *
+   * @param <T> the type of the actual value.
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  public <T> ProxyableObjectAssert<T> assertThatObject(T actual) {
+    return assertThat(actual);
+  }
+
+  /**
    * Creates a new instance of <code>{@link UriAssert}</code>.
    *
    * @param actual the actual value.

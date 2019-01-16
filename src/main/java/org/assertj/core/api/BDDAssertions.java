@@ -1069,6 +1069,31 @@ public class BDDAssertions extends Assertions {
   }
 
   /**
+   * Creates a new instance of <code>{@link org.assertj.core.api.ObjectAssert}</code> for any object.
+   *
+   * <p>
+   * This overload is useful, when an overloaded method of then(...) takes precedence over the generic {@link #then(Object)}.
+   * </p>
+   *
+   * Example :
+   * <pre><code class='java'>class MyList<T> extends AbstractList<T> {
+   *     public int allocationSize() { ... }
+   * }
+   *
+   * // cast necessary because {@link #assertThat(List)} "forgets" actual type
+   * then(new MyList<Object>()).matches(list -> ((MyList<Object>) list).allocationSize() == 13);
+   * // no cast needed, but also no additional list assertions
+   * thenObject(new MyList<Object>()).matches(list -> list.allocationSize() == 13);</code></pre>
+   *
+   * @param <T> the type of the actual value.
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  public static <T> ObjectAssert<T> thenObject(T actual) {
+    return then(actual);
+  }
+
+  /**
    * Creates a new instance of <code>{@link org.assertj.core.api.LocalDateAssert}</code>.
    *
    * @param actual the actual value.

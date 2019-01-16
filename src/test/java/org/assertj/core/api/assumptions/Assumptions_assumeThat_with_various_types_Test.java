@@ -348,6 +348,18 @@ public class Assumptions_assumeThat_with_various_types_Test {
           public void runPassingAssumption() {
             assumeThat(actual).satisfiesAnyOf(s -> assertThat(s).isLowerCase(), s -> assertThat(s).isBlank());
           }
+        },
+        new AssumptionRunner<LinkedList<String>>(new LinkedList<>(asList("abc"))) {
+          @Override
+          public void runFailingAssumption() {
+            assumeThatObject(actual).satisfies(l -> assertThat(l).isEmpty());
+          }
+
+          @Override
+          public void runPassingAssumption() {
+            assumeThatObject(actual).satisfies(l -> assertThatObject(l).has(
+              new Condition<>(list -> list.getFirst().equals("abc"), "First element is 'abc'")));
+          }
         });
     };
 
